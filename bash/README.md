@@ -1,7 +1,5 @@
-* manage_vms.sh - Proxmox Script to stop or start QEMU Virtual Machines by Ranges of VMID's
-  * usage: manage_vms.sh <start | stop> MIN_Range MAX_Range
+## Bash Scripts
 
-| First Header  | Second Header |
+| Script  | Description |
 | ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| manage_vms | Bash script to start or stop QEMU Virtual Machines by VMID's ranges in Proxmox |
