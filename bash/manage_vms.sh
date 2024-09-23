@@ -16,14 +16,14 @@ MAX_VMID=$3
 # Function to start VMs
 start_vm() {
     local vmid=$1
-    echo "Starting VMID: $vmid"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting VMID: $vmid"
     /usr/sbin/qm start $vmid
 }
 
 # Function to stop VMs
 stop_vm() {
     local vmid=$1
-    echo "Shutting down VMID: $vmid"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Stopping VMID: $vmid"
     /usr/sbin/qm shutdown $vmid
 }
 
@@ -34,7 +34,7 @@ vmids=($(/usr/sbin/qm list | awk -v min=$MIN_VMID -v max=$MAX_VMID 'NR>1 && $1 >
 for i in "${!vmids[@]}"; do
     vmid=${vmids[$i]}
     vmname=$(/usr/sbin/qm list | awk -v id=$vmid '$1 == id {print $2}')
-    echo "VM Name: $vmname, VMID: $vmid"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] VM Name: $vmname, VMID: $vmid"
 
     # Check if the VM is running
     status=$(/usr/sbin/qm status $vmid | awk '{print $2}')
@@ -43,7 +43,7 @@ for i in "${!vmids[@]}"; do
             stop_vm $vmid
             # Wait for 2 minutes unless it's the last VM
             if [ $i -lt $((${#vmids[@]} - 1)) ]; then
-                echo "Waiting for 30 seconds before shutting down the next VM..."
+                echo "[$(date '+%Y-%m-%d %H:%M:%S')] Waiting for 30 seconds before shutting down the next VM..."
                 sleep 30
             fi
         fi
@@ -52,11 +52,11 @@ for i in "${!vmids[@]}"; do
             start_vm $vmid
             # Wait for 2 minutes unless it's the last VM
             if [ $i -lt $((${#vmids[@]} - 1)) ]; then
-                echo "Waiting for 2 minutes before starting up the next vm..."
+                echo "[$(date '+%Y-%m-%d %H:%M:%S')] Waiting for 2 minutes before starting the next VM..."
                 sleep 120
             fi
         fi
     else
-        echo "VM Name: $vmname, VMID: $vmid has an unknown status: $status"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] VM Name: $vmname, VMID: $vmid has an unknown status: $status"
     fi
 done
